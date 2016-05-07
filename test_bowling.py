@@ -4,7 +4,7 @@ import bowling
 class TestBowlingGame(unittest.TestCase):
 
     def setUp(self):
-        self.myGame = bowling.BowlingGame(1)
+        self.myGame = bowling.BowlingGame()
 
     def test_startGame(self):
         self.myGame
