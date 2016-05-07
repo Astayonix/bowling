@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, shuffle, randint, sample
 
 class BowlingGame(object):
 
@@ -9,13 +9,12 @@ class BowlingGame(object):
     bumpers = False
     num_players = 1
 
-    # def __init__(self, num_players):
-    #     """Intial configuration of the bowling game"""
-    #     self.num_players = range(num_players)
+    def __init__(self, name):
+        self.name = name
 
     def greetingUser(self):
         """Greets the user"""
-        print "Welcome to the Bowling Alley!\nBefore we get started, I need to know if you want to use bumpers."
+        print "Welcome to the Bowling Alley, %s!\nBefore we get started, I need to know if you want to use bumpers." % (self.name)
 
     def bumpersUpDown(self):
         """Sets bumper use to either True or False"""
@@ -56,34 +55,37 @@ class BowlingGame(object):
         while self.total_frames:
             print "This is frame %s of 10" % (self.total_frames[0]+1)
             for frame in self.total_frames:
-                print frame
+                # print frame
                 self.throwBall()
             self.total_frames.pop(0)
 
     def throwBall(self):
         """Determines if the ball hits the pins in the lane or not and decrements the number of balls left to roll in the current frame"""
+        fallen_pins = 0
         while self.throws_per_frame:
             self.throws_per_frame -= 1
-            hit_pins = choice([True, False])
+            hit_pins = choice([True])
             if hit_pins == True:
                 print "The ball hits the pins!"
-                return True
+                pins_knocked_over = sample(self.pins_in_lane, randint(0,len(self.pins_in_lane)))
+                print self.pins_in_lane
+                for pin in pins_knocked_over:
+                    pin = int(pin)
+                    print pin
+                    self.pins_in_lane[pin] = '/'
+                    print self.pins_in_lane
+                    # if pin in self.pins_in_lane:
+                    #     print pin
+                # return fallen_pins
             elif hit_pins == False and self.bumpers == False:
                 print "Oh no! A gutter ball!"
+                return fallen_pins
             else:
                 print "Somehow, the ball missed the pins entirely!"
+                return fallen_pins
 
-    def pinsHit(self):
-        """Determines which pins were hit and re-draws what the pins look like in the lane"""
-        self.throwBall()
-        hit = self.throwBall()
-        if hit == True:
-            num_of_pins_to_fall = choice(len(self.pins_in_lane))
-            print num_of_
-
-myGame = BowlingGame()
+myGame = BowlingGame('Jessica')
 myGame.greetingUser()
 myGame.bumpersUpDown()
 myGame.showLane()
 myGame.frameHandler()
-myGame.pinsHit()
