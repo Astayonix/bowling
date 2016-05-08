@@ -1,4 +1,4 @@
-from random import choice, shuffle, randint, sample
+from random import choice, randint, sample
 
 class BowlingGame(object):
 
@@ -12,9 +12,10 @@ class BowlingGame(object):
     def __init__(self, name):
         self.name = name
 
-    def greetingUser(self):
+    def userGreeting(self):
         """Greets the user"""
         print "Welcome to the Bowling Alley, %s!\nBefore we get started, I need to know if you want to use bumpers." % (self.name)
+        self.bumpersUpDown()
 
     def bumpersUpDown(self):
         """Sets bumper use to either True or False"""
@@ -34,6 +35,7 @@ class BowlingGame(object):
                     userinput = raw_input("Invalid input.  Please type 'True' or 'False' >>> ")
             except ValueError:
                 userinput = raw_input("Invalid input.  Please type 'True' or 'False' >>> ")
+        self.frameHandler()
 
     def showLane(self):
         """Shows the current configuration of the pins in the lane"""
@@ -52,40 +54,74 @@ class BowlingGame(object):
 
     def frameHandler(self):
         """Keeps track of the number of frames remaining in the game"""
-        while self.total_frames:
-            print "This is frame %s of 10" % (self.total_frames[0]+1)
-            for frame in self.total_frames:
-                # print frame
-                self.throwBall()
-            self.total_frames.pop(0)
+        total_score_list = []
+        for frame in self.total_frames:
+            print "This is frame %s of 10" % (frame+1)
+            self.showLane()
+            a_round = self.throwBall()
+            total_score_list.append(a_round)
+            # self.showLeaderboard()
+            self.resetLane()
+        return total_score_list
+        # self.resetBowlingGame()
+            # print frame
 
     def throwBall(self):
         """Determines if the ball hits the pins in the lane or not and decrements the number of balls left to roll in the current frame"""
-        fallen_pins = 0
+        running_score_this_frame = 0
+        this_throw_scores = [] #[first throw, second throw, special scoring type]
         while self.throws_per_frame:
-            self.throws_per_frame -= 1
-            hit_pins = choice([True])
+            hit_pins = choice([True, False])
             if hit_pins == True:
                 print "The ball hits the pins!"
-                pins_knocked_over = sample(self.pins_in_lane, randint(0,len(self.pins_in_lane)))
-                print self.pins_in_lane
-                for pin in pins_knocked_over:
-                    pin = int(pin)
-                    print pin
-                    self.pins_in_lane[pin] = '/'
-                    print self.pins_in_lane
-                    # if pin in self.pins_in_lane:
-                    #     print pin
-                # return fallen_pins
+                remaining_pins = [pin for pin in self.pins_in_lane if pin != '/']
+                pins_knocked_over = sample(remaining_pins, randint(1,len(remaining_pins)))
+                if pins_knocked_over != []:
+                    for pin in pins_knocked_over:
+                        self.pins_in_lane[pin] = '/'
+                    fallen_pins_this_throw = len(pins_knocked_over)
+                    running_score_this_frame += fallen_pins_this_throw
+                    self.showLane()
+                    if fallen_pins_this_throw == 10:
+                        this_throw_scores.append(fallen_pins_this_throw)
+                        if this_throw_scores[0] == 10:
+                            this_throw_scores.append(0)
+                        this_throw_scores.append('strike')
+                        print "WOW A STRIKE!"
+                        self.throws_per_frame = 0
+                    elif running_score_this_frame == 10:
+                        this_throw_scores.append(fallen_pins_this_throw)
+                        this_throw_scores.append('spare')
+                        print "COOL A SPARE!"
+                        self.throws_per_frame -= 1
+                    else:
+                        this_throw_scores.append(fallen_pins_this_throw)
+                        print "Nice Shot!"
+                        self.throws_per_frame -= 1
             elif hit_pins == False and self.bumpers == False:
+                this_throw_scores.append(0)
                 print "Oh no! A gutter ball!"
-                return fallen_pins
+                self.throws_per_frame -= 1
             else:
+                this_throw_scores.append(0)
                 print "Somehow, the ball missed the pins entirely!"
-                return fallen_pins
+                self.throws_per_frame -= 1
+        return this_throw_scores
+
+    def resetLane(self):
+        """Resets the pins and balls after reach frame"""
+        self.throws_per_frame = 2
+        self.pins_in_lane = range(10)
+
+    def resetBowlingGame(self):
+        """Resets the bowling alley once the game is over"""
+        user_continue = raw_input("That was a good game, %s!  Would you like to play again?  Please type 'Yes' or 'No'" % self.name)
+        self.userGreeting()
+
+    def showLeaderboard(self):
+        """Displays the current and running score for the game"""
+        pass
+
 
 myGame = BowlingGame('Jessica')
-myGame.greetingUser()
-myGame.bumpersUpDown()
-myGame.showLane()
-myGame.frameHandler()
+myGame.userGreeting()
