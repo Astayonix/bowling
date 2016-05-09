@@ -7,6 +7,7 @@ class BowlingGame(object):
     throws_per_frame = 2
     gutter = range(2)
     bumpers = False
+    total_game_tally_list = []
 
     def __init__(self, name):
         self.name = name
@@ -123,11 +124,9 @@ class BowlingGame(object):
     def showLeaderboard(self):
         """Displays the current and running score for the game"""        
         the_game_list = self.frameHandler()
-        total_game_tally = []
+        self.total_game_tally_list = the_game_list
         visualization_list = []
         for each_frame in the_game_list:
-            running_total = each_frame[0] + each_frame[1]
-            total_game_tally.append(running_total)
             converter_list = ['X' if x == 10 else x for x in each_frame]
             if 'spare' in converter_list:
                 converter_list[1] = "/"
@@ -135,8 +134,6 @@ class BowlingGame(object):
                 i = converter_list.index(0)
                 converter_list[i] = "-"
             visualization_list.append(converter_list)
-        print total_game_tally
-        print the_game_list
         
         print "Here is your scorecard for this game:"
         print "|--------------------------------------------------------------------|"
@@ -148,8 +145,40 @@ class BowlingGame(object):
         print "|--------------------------------------------------------------------|"
         print "|Ball 2 |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s   |" % (visualization_list[0][1], visualization_list[1][1], visualization_list[2][1], visualization_list[3][1], visualization_list[4][1], visualization_list[5][1], visualization_list[6][1], visualization_list[7][1], visualization_list[8][1], visualization_list[9][1])
         print "|--------------------------------------------------------------------|"
-        print "|Score  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s   |" % ()
+        # print "|Score  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s   |" % ()
         print "|--------------------------------------------------------------------|"
+
+    def theScore(self):
+        the_game_list = self.total_game_tally_list
+        score_sums = []
+        # grand_total = sum(score_sums)
+        # print the_game_list
+        for i in range(len(the_game_list)):
+            for each_frame in the_game_list:
+                # print i, each_frame
+                if len(each_frame) == 3:
+                    print each_frame
+                    if 'strike' in each_frame:
+                        # strike_score = 
+                        print each_frame
+                    elif 'spare' in each_frame:
+                        # spare_score = each_frame[0] + each_frame[1]
+                        print each_frame
+                else:
+                    running_total = each_frame[0] + each_frame[1]
+                    # score_sums.append(running_total)
+        print score_sums
+            # for i in each_frame:
+            #     current = each_frame[i]
+            #     next = each_frame[i]+1
+            #     print current
+            # if 'strike' in each_frame:
+
+            # running_total = each_frame[0] + each_frame[1]
+            # score_sums.append(running_total)
+        # print score_sums
+ 
 
 myGame = BowlingGame('Jessica')
 myGame.userGreeting()
+myGame.theScore()
