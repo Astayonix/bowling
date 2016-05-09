@@ -8,7 +8,7 @@ The bowling game is a one-player bowling script written in Python that takes a s
 <h5> Assumptions </h5>
 Scoring Rules:
 I set the rules for scoring the user's game per the instructions in this video.
-![alt tag](https://www.youtube.com/watch?v=2w1MFocEPU0)
+[![How to score a bowling game]](https://www.youtube.com/watch?v=2w1MFocEPU0)
 
 Version 2.0:
 The next version will have a method for handling the possible 3 balls in the 10th frame (e.g. if a 2 strikes are thrown in the last frame, the user gets 3 additional balls to throw).  There will also be an additional method added to see if the user wants to play a new game after completing all 10 frames of play.
