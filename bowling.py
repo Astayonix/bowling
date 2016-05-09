@@ -134,10 +134,11 @@ class BowlingGame(object):
                 i = converter_list.index(0)
                 converter_list[i] = "-"
             visualization_list.append(converter_list)
+        final_score_list = self.theScore()
         
         print "Here is your scorecard for this game:"
         print "|--------------------------------------------------------------------|"
-        print "|name: %s" % (self.name)
+        print "|Name: %s" % (self.name)
         print "|--------------------------------------------------------------------|"
         print "|Frame  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |"
         print "|--------------------------------------------------------------------|"
@@ -145,40 +146,37 @@ class BowlingGame(object):
         print "|--------------------------------------------------------------------|"
         print "|Ball 2 |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s   |" % (visualization_list[0][1], visualization_list[1][1], visualization_list[2][1], visualization_list[3][1], visualization_list[4][1], visualization_list[5][1], visualization_list[6][1], visualization_list[7][1], visualization_list[8][1], visualization_list[9][1])
         print "|--------------------------------------------------------------------|"
-        # print "|Score  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s   |" % ()
+        print "|Score |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |  %s  |" % (final_score_list[0], final_score_list[1], final_score_list[2], final_score_list[3], final_score_list[4], final_score_list[5], final_score_list[6], final_score_list[7], final_score_list[8], final_score_list[9])
         print "|--------------------------------------------------------------------|"
+        print "|Congratulations! You bowled a %s game!\n" % (sum(final_score_list))
 
     def theScore(self):
         the_game_list = self.total_game_tally_list
         score_sums = []
-        # grand_total = sum(score_sums)
-        # print the_game_list
-        for i in range(len(the_game_list)):
-            for each_frame in the_game_list:
-                # print i, each_frame
-                if len(each_frame) == 3:
-                    print each_frame
-                    if 'strike' in each_frame:
-                        # strike_score = 
-                        print each_frame
-                    elif 'spare' in each_frame:
-                        # spare_score = each_frame[0] + each_frame[1]
-                        print each_frame
-                else:
-                    running_total = each_frame[0] + each_frame[1]
-                    # score_sums.append(running_total)
-        print score_sums
-            # for i in each_frame:
-            #     current = each_frame[i]
-            #     next = each_frame[i]+1
-            #     print current
-            # if 'strike' in each_frame:
+        flattened_scores = [x for each_frame in the_game_list for x in each_frame]
+        flattened_scores = [x for x in flattened_scores if x not in ['spare', 'strike']]
+        start = 0
+        next_slice = flattened_scores[start:start+2]
+        while start < len(flattened_scores):
+            if sum(next_slice) == 10 and (next_slice[0] != 10 and next_slice[1] != 10): #spare
+                this_slice = flattened_scores[start:start+3]
+                start += 2
+                next_slice = flattened_scores[start:start+2]
+                final_frame_score = sum(this_slice)
+                score_sums.append(final_frame_score)
+            elif sum(next_slice) == 10 and (next_slice[0] == 10 or next_slice[1] == 10): #strike
+                this_slice = flattened_scores[start:start+4]
+                start += 2
+                next_slice = flattened_scores[start:start+2]
+                final_frame_score = sum(this_slice)
+                score_sums.append(final_frame_score)
+            else: #normal
+                this_slice = flattened_scores[start:start+2]
+                start += 2
+                next_slice = flattened_scores[start:start+2]
+                final_frame_score = sum(this_slice)
+                score_sums.append(final_frame_score)
+        return score_sums
 
-            # running_total = each_frame[0] + each_frame[1]
-            # score_sums.append(running_total)
-        # print score_sums
- 
-
-myGame = BowlingGame('Jessica')
+myGame = BowlingGame('Jessica Burns')
 myGame.userGreeting()
-myGame.theScore()
