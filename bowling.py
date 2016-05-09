@@ -1,3 +1,4 @@
+"""A Bowling Game by Jessica Burns"""
 from random import choice, randint, sample
 
 class BowlingGame(object):
@@ -25,11 +26,11 @@ class BowlingGame(object):
             try:
                 if userinput == 'True':
                     self.bumpers = True
-                    print "Great! Bumpers are ON.\nNow, lace up your shoes, grab a ball, and I'll meet you at the lane!"
+                    print "Great! Bumpers are ON.\nNow, lace up your shoes, grab a ball, and I'll meet you at the lane!\n"
                     valid_input = True
                 elif userinput == 'False':
                     self.bumpers = False
-                    print "Great! Bumpers are OFF.\nNow, lace up your shoes, grab a ball, and I'll meet you at the lane!"
+                    print "Great! Bumpers are OFF.\nNow, lace up your shoes, grab a ball, and I'll meet you at the lane!\n"
                     valid_input = True
                 else:
                     userinput = raw_input("Invalid input.  Please type 'True' or 'False' >>> ")
@@ -40,17 +41,17 @@ class BowlingGame(object):
     def showLane(self):
         """Shows the current configuration of the pins in the lane"""
         if self.bumpers == True:
-            print "Here is what the pins currently look line in the lane.\n\n"
+            print "Here is what the pins currently look line in the lane."
             print "||}  %s %s %s %s  {||" % (self.pins_in_lane[0],self.pins_in_lane[1],self.pins_in_lane[2],self.pins_in_lane[3])
             print "||}   %s %s %s   {||" % (self.pins_in_lane[4], self.pins_in_lane[5], self.pins_in_lane[6])
             print "||}    %s %s    {||" % (self.pins_in_lane[7], self.pins_in_lane[8])
-            print "||}     %s     {||\n\n" % (self.pins_in_lane[9])
+            print "||}     %s     {||\n" % (self.pins_in_lane[9])
         else:
-            print "Here is what the pins currently look line in the lane.\n\n"
+            print "Here is what the pins currently look line in the lane."
             print "{||  %s %s %s %s  ||}" % (self.pins_in_lane[0],self.pins_in_lane[1],self.pins_in_lane[2],self.pins_in_lane[3])
             print "{||   %s %s %s   ||}" % (self.pins_in_lane[4], self.pins_in_lane[5], self.pins_in_lane[6])
             print "{||    %s %s    ||}" % (self.pins_in_lane[7], self.pins_in_lane[8])
-            print "{||     %s     ||}\n\n" % (self.pins_in_lane[9])
+            print "{||     %s     ||}\n" % (self.pins_in_lane[9])
 
     def frameHandler(self):
         """Keeps track of the number of frames remaining in the game"""
@@ -68,10 +69,10 @@ class BowlingGame(object):
         this_throw_scores = [] #[first throw, second throw, special scoring type]
         while self.throws_per_frame:
             self.showLane()
-            print "O O O ...Rolling... o o o\n"
+            print "O O O ...Rolling... o o o"
             hit_pins = choice([True, False])
             if hit_pins == True:
-                print "The ball hits the pins!\n"
+                print "The ball hits the pins!"
                 remaining_pins = [pin for pin in self.pins_in_lane if pin != '/']
                 pins_knocked_over = sample(remaining_pins, randint(1,len(remaining_pins)))
                 if pins_knocked_over != []:
@@ -178,5 +179,5 @@ class BowlingGame(object):
                 score_sums.append(final_frame_score)
         return score_sums
 
-myGame = BowlingGame('Jessica Burns')
+myGame = BowlingGame('Bowling Enthusiast')
 myGame.userGreeting()
